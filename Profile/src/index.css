@@ -52,6 +52,13 @@
 
 body {
   margin: 0;
+  background-color: #f5f5dc;
+}
+
+section {
+  padding: 60px;
+  max-width: 900px;
+  margin: auto;
 }
 
 #root {
