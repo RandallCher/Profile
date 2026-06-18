@@ -11,29 +11,50 @@ export default function Weather() {
         const lat = pos.coords.latitude
         const lon = pos.coords.longitude
 
-        setCoords({ lat, lon })   // ✅ store lat/lon
+        setCoords({ lat, lon })
 
-        fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
-        )
+        // -------------------
+        // WEATHER FETCH
+        // -------------------
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
           .then(res => res.json())
-          .then(data => setWeather(data.current_weather))
+          .then(data => {
+            if (data.current_weather) {
+              setWeather(data.current_weather)
+            } else {
+              console.error("No current_weather returned:", data)
+            }
+          })
+          .catch(err => console.error("Weather fetch failed:", err))
 
+        // -------------------
+        // REVERSE GEOCODE
+        // -------------------
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
           )
           const data = await res.json()
+          const addr = data.address || {}
 
-          const addr = data.address
-
-          setLocation(
+          const place =
             addr.suburb ||
             addr.city_district ||
             addr.neighbourhood ||
             addr.city ||
+            addr.town ||
+            addr.village ||
             "Unknown location"
-          )
+
+          const country = addr.country
+
+          const formattedLocation =
+            country && place !== country
+              ? `${place}, ${country}`
+              : place
+
+          setLocation(formattedLocation)
+
         } catch (err) {
           console.error(err)
           setLocation("Location unavailable")
@@ -58,7 +79,6 @@ export default function Weather() {
         <p>
           Lat: {coords.lat.toFixed(5)} <br />
           Lon: {coords.lon.toFixed(5)}
-          didi work
         </p>
       )}
 
