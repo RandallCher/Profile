@@ -58,6 +58,7 @@ export default function Weather() {
         <p>
           Lat: {coords.lat.toFixed(5)} <br />
           Lon: {coords.lon.toFixed(5)}
+          didi work
         </p>
       )}
 
