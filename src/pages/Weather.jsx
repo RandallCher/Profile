@@ -6,45 +6,54 @@ export default function Weather() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const lat = pos.coords.latitude
         const lon = pos.coords.longitude
 
-        setLocation("Your current location")
-
+        // 1. Get weather
         fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
         )
           .then(res => res.json())
           .then(data => setWeather(data.current_weather))
+
+        // 2. Get real location name (reverse geocode)
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+          )
+          const data = await res.json()
+
+          setLocation(
+            data.address.city ||
+            data.address.town ||
+            data.address.suburb ||
+            data.address.county ||
+            "Unknown location"
+          )
+        } catch (err) {
+          console.error(err)
+          setLocation("Location unavailable")
+        }
       },
       (err) => {
         console.error(err)
-        setLocation("Location access denied (default: Singapore)")
-
-        // fallback to Singapore if user denies permission
-        fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=1.3521&longitude=103.8198&current_weather=true'
-        )
-          .then(res => res.json())
-          .then(data => setWeather(data.current_weather))
+        setLocation("Permission denied")
       }
     )
   }, [])
+
+  if (!weather) return <p>Loading...</p>
 
   return (
     <div>
       <h1>Weather Page 🌤️</h1>
 
-      {!weather ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <p>Temperature: {weather.temperature}°C</p>
-          <p>Wind Speed: {weather.windspeed} km/h</p>
-          <p>Location: {location}</p>
-        </div>
-      )}
+      <p>Location: {location}</p>
+
+      <p>Temperature: {weather.temperature}°C</p>
+      <p>Wind Speed: {weather.windspeed} km/h</p>
+      <p>deployment successful</p>
     </div>
   )
 }
