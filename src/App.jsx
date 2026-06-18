@@ -10,7 +10,7 @@ export default function App() {
         <Route path="/" element={<Hero />} />
 
         {/* Weather page */}
-        <Route path="/weather" element={<Weather />} />
+        <Route path="/Weather" element={<Weather />} />
 
         {/* Safety fallback (optional but recommended) */}
         <Route path="*" element={<Navigate to="/" replace />} />
