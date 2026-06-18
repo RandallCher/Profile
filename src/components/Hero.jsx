@@ -12,10 +12,10 @@ export default function Hero() {
 
       <h1>Randall Cher</h1>
 
-      <h3>Software Engineer | ML Engineer | Cybersecurity</h3>
+      <h3>Software Engineer | AI Engineer | IoT Engineer</h3>
 
       <p>
-        Building systems in backend, AI, and IoT (BLE asset tracking)
+        Digital Engineer in HTX
       </p>
 
     </section>
