@@ -1,19 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Hero from './pages/Hero'
+import Weather from './pages/Weather'
 
-import Hero from "./components/Hero"
-
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <div> 
-      <Hero />  
+    <div>
+      <Routes>
+        {/* Default landing page */}
+        <Route path="/" element={<Hero />} />
+
+        {/* Weather page */}
+        <Route path="/weather" element={<Weather />} />
+
+        {/* Safety fallback (optional but recommended) */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   )
 }
-
-export default App
