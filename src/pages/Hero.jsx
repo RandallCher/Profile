@@ -47,7 +47,7 @@ export default function Hero() {
       <h3>Software Engineer | AI Engineer | IoT Engineer</h3>
 
       <p>Digital Engineer in HTX HEHE
-        {/* didi work */}
+        {/* didit work */}
       </p>
 
     </section>
